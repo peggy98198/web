@@ -1,0 +1,33 @@
+/* Reset and base styles to ensure consistent rendering across browsers */
+* { box-sizing: border-box; } /* Include borders and padding in element width/height */
+html, body { margin: 0; padding: 0; font-family: system-ui, "Apple SD Gothic Neo", "Noto Sans KR", Arial, sans-serif; } /* Remove default margins and set readable font */
+body { color: #0f172a; background: #f8fafc; } /* Set text color and light background */
+/* Layout */
+.app-header { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: #0ea5e9; color: white; position: sticky; top: 0; z-index: 10; } /* Sticky header with accent color */
+.brand { margin: 0; font-size: 1.25rem; } /* Compact brand title */
+.header-actions { display: flex; gap: 8px; } /* Space between header buttons */
+.app-main { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding: 16px; max-width: 1200px; margin: 0 auto; } /* Two column main grid centered */
+.panel { background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; box-shadow: 0 1px 2px rgba(2, 6, 23, 0.06); } /* Card-like panel style */
+.panel-title { margin: 0 0 10px; font-size: 1rem; color: #0f172a; } /* Panel heading style */
+.row { display: grid; grid-template-columns: 120px 1fr 120px 1fr; gap: 8px; align-items: center; margin-top: 10px; } /* Grid row for paired labels and inputs */
+.row.sticky-actions { grid-template-columns: 1fr 1fr; gap: 12px; position: sticky; bottom: -16px; background: white; padding-top: 12px; } /* Sticky actions at bottom of left panel */
+.label { color: #334155; font-size: 0.9rem; } /* Label color and size */
+.input, .select, .range, .button, .output { width: 100%; } /* Make form controls full width */
+.input, .select, .output, textarea { padding: 10px; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 0.95rem; } /* Inputs and outputs basic style */
+.input:focus, .select:focus, .output:focus, textarea:focus { outline: 2px solid #0ea5e9; border-color: transparent; } /* Accessible focus ring */
+.button { padding: 10px 12px; border-radius: 10px; border: 1px solid #cbd5e1; background: #f1f5f9; cursor: pointer; font-weight: 600; } /* Generic button style */
+.button:hover { filter: brightness(0.98); } /* Slight darken on hover */
+.button.primary { background: #0ea5e9; color: white; border-color: #0ea5e9; } /* Primary button with brand color */
+.button.ghost { background: transparent; color: white; border-color: rgba(255,255,255,0.4); } /* Ghost button in header */
+.guideline-block, .output-block { margin-top: 12px; } /* Space between guideline and output blocks */
+.guideline-header { display: flex; flex-wrap: wrap; gap: 6px; } /* Header line of tags */
+.tag { background: #ecfeff; color: #0369a1; border: 1px solid #bae6fd; padding: 4px 8px; border-radius: 999px; font-size: 0.8rem; } /* Pill tag styles */
+.pre { background: #f8fafc; border: 1px dashed #cbd5e1; padding: 12px; border-radius: 10px; white-space: pre-wrap; } /* Preformatted text block */
+.pre.small { font-size: 0.85rem; } /* Smaller font for guideline text */
+.output { min-height: 220px; background: #0b1020; color: #e2e8f0; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; } /* Dark themed output textarea */
+.details { margin-top: 14px; } /* Space above details element */
+.dialog::backdrop { background: rgba(2, 6, 23, 0.5); } /* Semi-transparent backdrop for dialog */
+.dialog .dialog-content { background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; min-width: 320px; } /* Dialog container style */
+.app-footer { text-align: center; color: #64748b; padding: 18px; font-size: 0.85rem; } /* Footer styling */
+/* Responsive adjustments for small screens */
+@media (max-width: 900px) { .app-main { grid-template-columns: 1fr; } .row { grid-template-columns: 1fr; } } /* Single column layout on small devices */

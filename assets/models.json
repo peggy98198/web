@@ -1,0 +1,121 @@
+{
+  "version": "2025.09.16",
+  "updatedAt": "2025-09-16T00:00:00Z",
+  "source": "local",
+  "models": [
+    {
+      "id": "midjourney",
+      "name": "Midjourney",
+      "latest": "v6.1",
+      "engines": ["text-to-image"],
+      "params": {
+        "aspectKey": "--ar",
+        "stylizeKey": "--stylize",
+        "seedKey": "--seed",
+        "negativeKey": "--no"
+      },
+      "guideline": [
+        "Describe subject, environment, lighting, camera, and materials in concise, comma-separated phrases.",
+        "Prefer photographic terms: focal length, aperture-like cues, lens type.",
+        "Avoid brand or celebrity likeness unless permitted.",
+        "Add style only after product fidelity: composition > materials > light > mood.",
+        "Use aspect and seed for reproducibility."
+      ],
+      "lexicon": {
+        "핑크 톤": "soft pink tone",
+        "아침 햇살": "morning sunlight",
+        "부드러운 난반사 조명": "soft diffuse bounce lighting",
+        "유리병": "glass bottle",
+        "물방울": "condensation droplets",
+        "선명한 라벨": "crisp label typography",
+        "왜곡": "warping",
+        "노이즈": "excessive noise"
+      },
+      "template": "Subject: {subject}. Environment: {environment}. Lighting: {lighting}. Materials: {materials}. Mood: {mood}. Composition: {composition}. Details: {details}. Quality: photographic realism, high detail, product fidelity.\nParameters: {aspect} {stylize} {seed} {negative}"
+    },
+    {
+      "id": "nano-banana",
+      "name": "Nano Banana",
+      "latest": "v2.3",
+      "engines": ["text-to-image", "text-to-video"],
+      "params": {
+        "aspectKey": "--ratio",
+        "stylizeKey": "--style-strength",
+        "seedKey": "--seed",
+        "negativeKey": "--avoid"
+      },
+      "guideline": [
+        "Keep nouns then attributes order for better parsing.",
+        "Specify motion intent for text-to-video in present participles.",
+        "Provide color management terms if brand-critical."
+      ],
+      "lexicon": {
+        "유광": "glossy",
+        "무광": "matte",
+        "라벨": "label",
+        "광택": "specular highlights",
+        "미세 입자": "fine particulate"
+      },
+      "template": "Core: {subject} with {details}. Scene: {environment}. Light: {lighting}. Materials: {materials}. Mood: {mood}. Frame: {composition}. Engine: {engine}.\nParameters: {aspect} {stylize} {seed} {negative}"
+    },
+    {
+      "id": "kling",
+      "name": "Kling",
+      "latest": "v1.8",
+      "engines": ["text-to-video", "image-to-video"],
+      "params": {
+        "aspectKey": "--ar",
+        "stylizeKey": "--style",
+        "seedKey": "--seed",
+        "negativeKey": "--no"
+      },
+      "guideline": [
+        "Always include camera motion verbs and duration hints.",
+        "Limit shot length and specify transitions.",
+        "For image-to-video, describe entry frame content succinctly."
+      ],
+      "lexicon": {
+        "부드러운 패닝": "gentle pan",
+        "줌인": "slow push-in",
+        "돌리": "dolly movement",
+        "장면 전환": "cut transition",
+        "초반 프레임": "starting frame"
+      },
+      "template": "Shot: {subject}. Motion: {details}. Environment: {environment}. Light: {lighting}. Materials: {materials}. Mood: {mood}. Composition: {composition}. Duration: {duration}s.\nParameters: {aspect} {stylize} {seed} {negative}"
+    },
+    {
+      "id": "imagen",
+      "name": "Imagen",
+      "latest": "v4",
+      "engines": ["text-to-image"],
+      "params": {
+        "aspectKey": "--aspect",
+        "stylizeKey": "--style",
+        "seedKey": "--seed",
+        "negativeKey": "--exclude"
+      },
+      "guideline": [
+        "Prefer natural language sentences; avoid excessive commas.",
+        "State brand-safety needs explicitly before style terms.",
+        "Use material PBR words: albedo, roughness, index of refraction."
+      ],
+      "lexicon": {
+        "난반사": "diffuse",
+        "굴절": "refraction",
+        "지수": "index",
+        "거칠기": "roughness"
+      },
+      "template": "Create a faithful product image of {subject} in {environment} with {lighting}. Materials emphasize {materials}. The mood is {mood}. Composition: {composition}. Extra details: {details}.\nParameters: {aspect} {stylize} {seed} {negative}"
+    },
+    {
+      "id": "custom",
+      "name": "Custom",
+      "latest": "v1",
+      "engines": ["text-to-image", "text-to-video", "image-to-video"],
+      "params": { "aspectKey": "--ar", "stylizeKey": "--style", "seedKey": "--seed", "negativeKey": "--no" },
+      "guideline": [ "Provide your own constraints in the custom area to merge with the template." ],
+      "lexicon": {},
+      "template": "Subject: {subject}. Environment: {environment}. Lighting: {lighting}. Materials: {materials}. Mood: {mood}. Composition: {composition}. Details: {details}.\nParameters: {aspect} {stylize} {seed} {negative}"
+    }
+  ]
+}

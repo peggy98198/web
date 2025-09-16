@@ -1,0 +1,117 @@
+<!DOCTYPE html> <!-- Declare HTML5 document type -->
+<html lang="ko"> <!-- Set the language to Korean as user inputs in Korean -->
+<head> <!-- Document head starts -->
+  <meta charset="UTF-8" /> <!-- Use UTF-8 for Korean and English characters -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" /> <!-- Responsive scaling on mobile -->
+  <title>AI Prompt Converter Hub</title> <!-- Page title shown in browser tab -->
+  <link rel="stylesheet" href="assets/styles.css" /> <!-- Link to external stylesheet -->
+  <link rel="preload" href="assets/models.json" as="fetch" crossorigin="anonymous" /> <!-- Preload model guideline JSON for faster first paint -->
+</head> <!-- Document head ends -->
+<body> <!-- Document body starts -->
+
+  <header class="app-header"> <!-- App header containing brand and quick actions -->
+    <h1 class="brand">프롬프트 변환 허브</h1> <!-- Site title in Korean -->
+    <div class="header-actions"> <!-- Container for header buttons -->
+      <button id="button-open-settings" class="button ghost">설정</button> <!-- Button to open settings panel -->
+      <button id="button-check-updates" class="button primary">가이드라인 업데이트</button> <!-- Manual update trigger -->
+    </div> <!-- End header actions -->
+  </header> <!-- End header -->
+
+  <main class="app-main"> <!-- Main app grid layout -->
+    <section class="panel panel-input"> <!-- Left panel for user input and controls -->
+      <h2 class="panel-title">1) 한국어로 원하는 이미지/영상 설명</h2> <!-- Instruction heading -->
+      <textarea id="textarea-korean" class="input" rows="7" placeholder="예: 맑은 유리병 위에 물방울이 맺힌 핑크 톤 스킨케어 제품 광고, 아침 햇살, 부드러운 난반사 조명"></textarea> <!-- Textarea for Korean description -->
+      <div class="row"> <!-- Row for model selection -->
+        <label for="select-model" class="label">AI 모델 선택</label> <!-- Label for model select -->
+        <select id="select-model" class="select"> <!-- Dropdown to choose target AI model -->
+          <option value="midjourney">Midjourney</option> <!-- Option for Midjourney -->
+          <option value="nano-banana">Nano Banana</option> <!-- Option for Nano Banana (placeholder vendor) -->
+          <option value="kling">Kling</option> <!-- Option for Kling -->
+          <option value="imagen">Imagen</option> <!-- Option for Google Imagen -->
+          <option value="custom">Custom (가이드 직접 구성)</option> <!-- Option to allow custom guideline -->
+        </select> <!-- End model select -->
+      </div> <!-- End row -->
+
+      <div class="row"> <!-- Row for engine selection -->
+        <label for="select-engine" class="label">엔진</label> <!-- Label for engine -->
+        <select id="select-engine" class="select"> <!-- Dropdown for generation engine type -->
+          <option value="text-to-image">Text to Image</option> <!-- Text to Image engine -->
+          <option value="text-to-video">Text to Video</option> <!-- Text to Video engine -->
+          <option value="image-to-video">Image to Video</option> <!-- Image to Video engine -->
+        </select> <!-- End engine select -->
+      </div> <!-- End row -->
+
+      <div class="row"> <!-- Row for negative prompt input -->
+        <label for="input-negative" class="label">제외(네거티브) 요소</label> <!-- Label for negative prompt -->
+        <input id="input-negative" class="input" type="text" placeholder="예: 왜곡, 잘린 로고, 과도한 노이즈" /> <!-- Negative prompt single-line input -->
+      </div> <!-- End row -->
+
+      <div class="row"> <!-- Row for strength controls -->
+        <label for="range-stylization" class="label">스타일 강도</label> <!-- Label for stylization intensity -->
+        <input id="range-stylization" class="range" type="range" min="0" max="100" value="50" /> <!-- Range slider for stylization -->
+      </div> <!-- End row -->
+
+      <div class="row"> <!-- Row for seed and ratio -->
+        <label for="input-aspect" class="label">비율</label> <!-- Label for aspect ratio -->
+        <input id="input-aspect" class="input" type="text" placeholder="예: 3:4, 1:1, 9:16" /> <!-- Aspect ratio input -->
+        <label for="input-seed" class="label">시드</label> <!-- Label for random seed -->
+        <input id="input-seed" class="input" type="number" placeholder="랜덤 또는 숫자" /> <!-- Seed number input -->
+      </div> <!-- End row -->
+
+      <div class="row sticky-actions"> <!-- Sticky action buttons row -->
+        <button id="button-convert" class="button primary">영문 프롬프트 생성</button> <!-- Button to convert to English prompt -->
+        <button id="button-clear" class="button">초기화</button> <!-- Button to clear inputs -->
+      </div> <!-- End row -->
+    </section> <!-- End left panel -->
+
+    <section class="panel panel-output"> <!-- Right panel for output results -->
+      <h2 class="panel-title">2) 모델 가이드라인 + 최적화 영문 프롬프트</h2> <!-- Output section heading -->
+      <div class="guideline-block"> <!-- Container showing guideline snapshot -->
+        <div class="guideline-header"> <!-- Header for guideline info -->
+          <span id="guideline-model-name" class="tag">모델: -</span> <!-- Placeholder for selected model name -->
+          <span id="guideline-version" class="tag">버전: -</span> <!-- Placeholder for guideline version -->
+          <span id="guideline-updated" class="tag">업데이트: -</span> <!-- Placeholder for last updated date -->
+        </div> <!-- End guideline header -->
+        <pre id="pre-guideline" class="pre small">모델을 선택하면 공식 가이드 요약이 여기에 표시됩니다.</pre> <!-- Preformatted area to show guideline summary -->
+      </div> <!-- End guideline block -->
+
+      <div class="output-block"> <!-- Container for final prompt outputs -->
+        <h3 class="output-title">최종 영문 프롬프트</h3> <!-- Title for final prompt -->
+        <textarea id="textarea-result" class="output" rows="12" readonly></textarea> <!-- Read-only textarea containing final English prompt -->
+        <div class="row"> <!-- Row for copy buttons -->
+          <button id="button-copy" class="button primary">프롬프트 복사</button> <!-- Copy prompt to clipboard -->
+          <button id="button-copy-params" class="button">파라미터 복사</button> <!-- Copy only parameter line -->
+        </div> <!-- End row -->
+      </div> <!-- End output block -->
+
+      <details class="details"> <!-- Collapsible details for advanced controls -->
+        <summary>고급: 변환 로직 미세 조정</summary> <!-- Summary label for collapsible section -->
+        <label class="label" for="textarea-custom-guideline">커스텀 가이드라인 (선택 사항)</label> <!-- Label for custom guideline -->
+        <textarea id="textarea-custom-guideline" class="input" rows="6" placeholder="여기에 모델별 추가 지침을 영어로 입력하면 병합됩니다."></textarea> <!-- Custom guideline merge textarea -->
+      </details> <!-- End details -->
+    </section> <!-- End right panel -->
+  </main> <!-- End main -->
+
+  <dialog id="dialog-settings" class="dialog"> <!-- Native dialog element for settings -->
+    <form method="dialog" class="dialog-content"> <!-- Form inside dialog to enable close behavior -->
+      <h3>설정</h3> <!-- Settings title -->
+      <label class="label" for="input-guidelines-url">가이드라인 원본 URL</label> <!-- Label for remote JSON source -->
+      <input id="input-guidelines-url" class="input" type="url" placeholder="예: https://example.com/models.json" /> <!-- Input for guidelines source URL -->
+      <label class="label" for="input-auto-interval">자동 업데이트 주기(분)</label> <!-- Label for auto-update interval -->
+      <input id="input-auto-interval" class="input" type="number" min="5" value="60" /> <!-- Number input for minutes between update checks -->
+      <div class="row"> <!-- Row for dialog action buttons -->
+        <button value="cancel" class="button">닫기</button> <!-- Close dialog without saving -->
+        <button id="button-save-settings" value="default" class="button primary">저장</button> <!-- Save settings and close -->
+      </div> <!-- End row -->
+    </form> <!-- End form -->
+  </dialog> <!-- End dialog -->
+
+  <footer class="app-footer"> <!-- App footer -->
+    <small>모든 상표는 각 소유자의 자산입니다. 본 도구는 공식 API가 없을 경우 로컬 규칙으로 프롬프트를 구성합니다.</small> <!-- Disclaimer note -->
+  </footer> <!-- End footer -->
+
+  <script src="scripts/promptEngines.js" defer></script> <!-- Load model-specific prompt builders -->
+  <script src="scripts/updateManager.js" defer></script> <!-- Load auto-update manager for guidelines -->
+  <script src="scripts/app.js" defer></script> <!-- Load main application logic last -->
+</body> <!-- Document body ends -->
+</html> <!-- Document ends -->
